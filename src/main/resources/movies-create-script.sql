@@ -11,6 +11,10 @@ USE movies_db;
 
 
 # 5. drop the table(s) to which no other tables are dependent (none at first)
+DROP TABLE IF EXISTS movie_genre;
+DROP TABLE IF EXISTS movies_actor;
+DROP TABLE IF EXISTS actors;
+DROP TABLE IF EXISTS genres;
 DROP TABLE IF EXISTS movies;
 DROP TABLE IF EXISTS directors;
 
@@ -19,7 +23,7 @@ DROP TABLE IF EXISTS directors;
 
 CREATE TABLE IF NOT EXISTS directors
 (
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    id   INT UNSIGNED NOT NULL AUTO_INCREMENT,
     name VARCHAR(120),
     PRIMARY KEY (id)
 
@@ -27,33 +31,52 @@ CREATE TABLE IF NOT EXISTS directors
 
 CREATE TABLE IF NOT EXISTS movies
 (
-    id       INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    title    VARCHAR(120),
-    year     CHAR(4),
-    plot     TEXT,
-    poster   TEXT,
-    rating   CHAR(1),
-    director VARCHAR(120),
+    id          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    title       VARCHAR(120) NOT NULL,
+    year        CHAR(4)      NOT NULL,
+    plot        TEXT,
+    poster      TEXT,
+    rating      CHAR(1),
+    director    VARCHAR(120),
     director_id INT UNSIGNED NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (director_id) REFERENCES directors(id)
+    FOREIGN KEY (director_id) REFERENCES directors (id)
 );
 
 
 # 6a. Run the script to make sure it works
 
-DESCRIBE movies;
-
-# 7. refactor to extract the directors to a new table with just an id and name
+# DESCRIBE movies;
 
 
-# --> change the movies table to reference the directors table via Foreign Key
-# --> now that movies is dependent on directors, you need to move directors above movies in the script
+# 7 ADD A TABLE FOR GENRE AND CREATE A JOIN TABLE BETWEEN MOVIES AND GENRE
 
-# 8. Go add DROP IF EXIST statements for movies and directors
+CREATE TABLE IF NOT EXISTS genres
+(
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    name VARCHAR(32),
+    PRIMARY KEY (id)
+);
 
-# 9. RUN IT!
+CREATE TABLE IF NOT EXISTS movie_genre(
+    movie_id INT UNSIGNED NOT NULL,
+    genre_id INT UNSIGNED NOT NULL,
+    FOREIGN KEY (movie_id) REFERENCES movies (id),
+    FOREIGN KEY (genre_id) REFERENCES genres (id)
+);
 
+CREATE TABLE IF NOT EXISTS actors(
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255),
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS movies_actor(
+    movie_id INT UNSIGNED NOT NULL,
+    actor_id INT UNSIGNED NOT NULL,
+    FOREIGN KEY (movie_id) REFERENCES movies(id),
+    FOREIGN KEY (actor_id) REFERENCES actors(id)
+);
 
 
 
