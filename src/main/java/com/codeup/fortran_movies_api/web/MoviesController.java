@@ -1,12 +1,17 @@
 package com.codeup.fortran_movies_api.web;
 
+import com.codeup.fortran_movies_api.data.Director;
+import com.codeup.fortran_movies_api.data.DirectorsRepository;
 import com.codeup.fortran_movies_api.data.Movie;
 import com.codeup.fortran_movies_api.data.MoviesRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/api/movies")
@@ -14,49 +19,74 @@ public class MoviesController {
 
 
     private final MoviesRepository moviesRepository;
+    private final DirectorsRepository directorsRepository;
 
-    public MoviesController(MoviesRepository moviesRepository) {
+
+    public MoviesController(MoviesRepository moviesRepository, DirectorsRepository directorsRepository) {
+        this.directorsRepository = directorsRepository;
         this.moviesRepository = moviesRepository;
     }
 
-
+//************** GET ALL MOVIES ****************
     @GetMapping("all") //Path becomes: api/movies/all
     public List<Movie> getAll(){
-//        return new ArrayList<>();
-//        return sampleMovies;
         return moviesRepository.findAll();
     }
 
+    //************** GET MOVIE BY ID ****************
     @GetMapping("{id}")
     public Movie getById(@PathVariable int id) {
-//        return sampleMovies.stream().filter((movie) -> {
-//                    return movie.getId() == id;
-//                })
-//                .findFirst()
-//                .orElse(null);
         return moviesRepository.findById(id).orElse(null);
 
     }
 
-    @GetMapping("{title}") // /api/movies/search?title=<movieTitle>&id=<movieId>
-    public List<Movie> getByTitle(@PathVariable String title){
+    //************** GET MOVIE BY TITLE ****************
+    @GetMapping("search") // /api/movies/search?title=<movieTitle>&id=<movieId>
+    public List<Movie> getByTitle(@RequestParam("title") String title){
+//            throws IOException{
+//        try{
+//            moviesRepository.findByTitle(title);
+//        }catch(Exception ex){
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No movie matching the title : " + title);
+//        }
 
         return moviesRepository.findByTitle(title);
     }
 
+    //************** GET MOVIES BY YEAR RANGE ****************
+    @GetMapping("search/year") // api/movies/search/year
+    public List<Movie> getByYearRange(@RequestParam("startYear") int startYear, @RequestParam("endYear") int endYear){
+        return moviesRepository.findByYearRange(startYear, endYear);
+    }
+
+    @GetMapping("search/director")
+    public List<Director> getByDirector(@RequestParam("name") String directorName){
+        System.out.println(directorName);
+        return directorsRepository.findByName(directorName);
+    }
+
+    //************** CREATE A MOVIE ****************
     @PostMapping
     public void create(@RequestBody Movie movie){
-//        System.out.println(movie);
-//        add to our movies list
-//        sampleMovies.add(movie);
         moviesRepository.save(movie);
     }
 
-
+    //************** CREATE MULTIPLE MOVIES ****************
     @PostMapping("all")
     public void createAll(@RequestBody List<Movie> moviesToAdd){
         moviesRepository.saveAll(moviesToAdd);
         System.out.println(moviesToAdd);
+    }
+
+    //************** DELETE MOVIE BY ID ****************
+    @DeleteMapping("{id}") /*api/movies/{id} -> api/movies/3 DELETE*/
+    public void deleteById(@PathVariable int id) throws IOException {
+        try {
+            moviesRepository.deleteById(id);
+        }catch(Exception ex){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No movie matching ID: " + id);
+        }
+
     }
 
 //    @PutMapping("{id}")
@@ -68,22 +98,6 @@ public class MoviesController {
 //        moviesRepository.save(movie);
 //    }
 
-
-
-
-
-    private List<Movie> setMovies(){
-        List<Movie> movies = new ArrayList<>();
-//        movies.add(new Movie(1, "Pulp Fiction", "1994","Quentin Tarantino",
-//                "Samuel L. Jackson, Uma Therman", "action, drama", "Plot"));
-//
-//        movies.add(new Movie(2,"test title","1996","test director",
-//                "test actor", "drama","test plot"));
-        movies.add(new Movie(1, "Pulp Fiction", "1994", "Plot"));
-
-        movies.add(new Movie(2,"test title","1996","test plot"));
-        return movies;
-    }
 
 
 }
