@@ -43,6 +43,14 @@ public class Director {
         this.name = name;
     }
 
+    public List<Movie> getDirectedMovies() {
+        return directedMovies;
+    }
+
+    public void setDirectedMovies(List<Movie> directedMovies) {
+        this.directedMovies = directedMovies;
+    }
+
     @Override
     public String toString() {
         return "Director{" +

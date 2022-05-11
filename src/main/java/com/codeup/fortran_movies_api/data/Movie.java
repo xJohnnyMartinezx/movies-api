@@ -112,7 +112,7 @@ public class Movie {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", year='" + year + '\'' +
-                ", director=" + director +
+                ", director=" + director.getName() +
                 ", plot='" + plot + '\'' +
                 ", poster='" + poster + '\'' +
                 ", rating='" + rating + '\'' +
