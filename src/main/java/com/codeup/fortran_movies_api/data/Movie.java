@@ -10,6 +10,8 @@ import java.util.List;
 @Table(name = "movies")
 public class Movie {
 
+
+    //    ***********PROPERTIES************
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -21,11 +23,22 @@ public class Movie {
     private String plot;
     private String poster;
     private String rating;
+
+//    ********BRINGS IN LIST OF GENRES (I THINK)**********
+//    NEED TO CREATE GETTERS AMD SETTERS FOR THIS.
     @ManyToMany(mappedBy = "movies")
     @JsonIgnoreProperties("movies")
     private List<Genre> genres;
 
+//    **********BRINGS IN LIST OF ACTORS (I THINK)********
+//    NEED TO CREATE GETTERS AMD SETTERS FOR THIS.
+    @ManyToMany(mappedBy = "movies")
+    @JsonIgnoreProperties("movies")
+    private List<Actor> actors;
 
+
+
+    //      ***********CONSTRUCTOR*************
     public Movie(int id, String title, String year, String plot, String poster, String rating) {
         this.id = id;
         this.title = title;
@@ -35,8 +48,12 @@ public class Movie {
         this.rating = rating;
     }
 
+
+    //           ********EMPTY CONSTRUCTOR******
     public Movie() {
     }
+
+    //    ****************GETTERS AND SETTERS*************
 
     public int getId() {
         return id;
@@ -96,8 +113,7 @@ public class Movie {
         this.rating = rating;
     }
 
-//    GENRE GETTER AND SETTER
-
+//*****NEED GETGENRES GETTER FOR JACKSON TO SERIALIZE LIST OF MOVIES*****
     public List<Genre> getGenres() {
         return genres;
     }
@@ -106,6 +122,15 @@ public class Movie {
         this.genres = genres;
     }
 
+    public List<Actor> getActors() {
+        return actors;
+    }
+
+    public void setActors(List<Actor> actors) {
+        this.actors = actors;
+    }
+
+    //    ************TOSTRING OVERRIDE************
     @Override
     public String toString() {
         return "Movie{" +

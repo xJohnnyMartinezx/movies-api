@@ -1,12 +1,12 @@
 package com.codeup.fortran_movies_api.data;
 
-
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "genres")
-public class Genre {
+@Table(name = "actors")
+public class Actor {
+
 
     //    ***********PROPERTIES************
     @Id
@@ -15,31 +15,33 @@ public class Genre {
     private String name;
 
     @ManyToMany
-    @JoinTable(name="movie_genre",
+    @JoinTable(name = "movies_actor",
             joinColumns =
-            @JoinColumn(name = "genre_id", referencedColumnName = "id"),
+            @JoinColumn(name = "actor_id", referencedColumnName = "id"),
             inverseJoinColumns =
             @JoinColumn(name = "movie_id", referencedColumnName = "id")
     )
 
 
-//    *******BRINGS IN THE MOVIE LIST********
+    //    *******BRINGS IN THE MOVIE ACTORS********
 
     private List<Movie> movies;
 
+//      ***********CONSTRUCTOR*************
 
-    //      ***********CONSTRUCTOR*************
-    public Genre(int id, String name) {
+    public Actor(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    //           ********EMPTY CONSTRUCTOR******
-    public Genre() {
+//           ********EMPTY CONSTRUCTOR******
 
+    public Actor() {
     }
 
-    //    ****************GETTERS AND SETTERS*************
+
+//    ****************GETTERS AND SETTERS*************
+
 
     public int getId() {
         return id;
@@ -57,19 +59,18 @@ public class Genre {
         this.name = name;
     }
 
-
-
-
-//    *****NEED GETMOVIES GETTER FOR JACKSON TO SERIALIZE LIST OF MOVIES*****
+    //    *****NEED GETMOVIES GETTER FOR JACKSON TO SERIALIZE LIST OF MOVIES*****
     public List<Movie> getMovies() {
         return movies;
     }
 
 
-    //    ************TOSTRING OVERRIDE************
+//    ************TOSTRING OVERRIDE************
+
+
     @Override
     public String toString() {
-        return "Genre{" +
+        return "Actor{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';
