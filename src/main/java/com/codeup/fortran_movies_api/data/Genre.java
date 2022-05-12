@@ -11,17 +11,19 @@ public class Genre {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private int id;
     private String name;
 
     @ManyToMany
-    @JoinTable(name = "movies_genre",
+    @JoinTable(name="movie_genre",
             joinColumns =
             @JoinColumn(name = "genre_id", referencedColumnName = "id"),
             inverseJoinColumns =
             @JoinColumn(name = "movie_id", referencedColumnName = "id")
     )
+
+
+//    *******BRINGS IN THE MOVIE GENRE********
 
     private List<Movie> movies;
 

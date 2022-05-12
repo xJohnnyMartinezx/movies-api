@@ -83,6 +83,7 @@ CREATE TABLE IF NOT EXISTS movies_actor
 
 INSERT INTO genres (name)
 VALUES ('Action'),
+       ('Drama'),
        ('Crime'),
        ('Fantasy'),
        ('Horror'),
