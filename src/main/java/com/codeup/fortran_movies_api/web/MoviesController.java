@@ -59,6 +59,9 @@ public class MoviesController {
         return moviesRepository.findByYearRange(startYear, endYear);
     }
 
+//    ********** GET MOVIES BY ACTORS *****************
+
+    //    ********** GET MOVIES BY DIRECTOR *****************
     @GetMapping("search/director")
     public List<Director> getByDirector(@RequestParam("name") String directorName){
         System.out.println(directorName);
