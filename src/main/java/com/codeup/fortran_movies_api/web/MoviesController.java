@@ -1,9 +1,6 @@
 package com.codeup.fortran_movies_api.web;
 
-import com.codeup.fortran_movies_api.data.Director;
-import com.codeup.fortran_movies_api.data.DirectorsRepository;
-import com.codeup.fortran_movies_api.data.Movie;
-import com.codeup.fortran_movies_api.data.MoviesRepository;
+import com.codeup.fortran_movies_api.data.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -20,11 +17,13 @@ public class MoviesController {
 
     private final MoviesRepository moviesRepository;
     private final DirectorsRepository directorsRepository;
+    private final ActorsRepository actorsRepository;
 
 
-    public MoviesController(MoviesRepository moviesRepository, DirectorsRepository directorsRepository) {
+    public MoviesController(MoviesRepository moviesRepository, DirectorsRepository directorsRepository, ActorsRepository actorsRepository) {
         this.directorsRepository = directorsRepository;
         this.moviesRepository = moviesRepository;
+        this.actorsRepository = actorsRepository;
     }
 
 //************** GET ALL MOVIES ****************
@@ -60,6 +59,11 @@ public class MoviesController {
     }
 
 //    ********** GET MOVIES BY ACTORS *****************
+    @GetMapping("search/actor")
+    public List<Actor> getByActor(@RequestParam("name") String actorName){
+        System.out.println(actorName);
+        return actorsRepository.findByName(actorName);
+    }
 
     //    ********** GET MOVIES BY DIRECTOR *****************
     @GetMapping("search/director")
