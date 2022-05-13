@@ -23,7 +23,7 @@ public class Actor {
     )
 
 
-    //    *******BRINGS IN THE MOVIE ACTORS********
+    //    *******BRINGS IN THE MOVIE LIST********
 
     private List<Movie> movies;
 

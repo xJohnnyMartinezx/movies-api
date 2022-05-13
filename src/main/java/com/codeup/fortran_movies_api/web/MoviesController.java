@@ -8,8 +8,9 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-
+@CrossOrigin
 @RestController
 @RequestMapping("/api/movies")
 public class MoviesController {
@@ -30,9 +31,28 @@ public class MoviesController {
     }
 
 //************** GET ALL MOVIES ****************
-    @GetMapping("all") //Path becomes: api/movies/all
-    public List<Movie> getAll(){
-        return moviesRepository.findAll();
+//    @GetMapping("all") //Path becomes: api/movies/all
+//    public List<Movie> getAll(){
+//        return moviesRepository.findAll();
+//    }
+
+    @GetMapping("all")
+    public List<MovieDto> getAll(){
+        List<Movie> movieEntities = moviesRepository.findAll();
+        List<MovieDto> movieDtos = new ArrayList<>();
+        for (Movie movie : movieEntities) {
+            movieDtos.add(new MovieDto(movie.getId(),
+                    movie.getTitle(),
+                    movie.getYear(),
+                    movie.getPlot(),
+                    movie.getGenres().stream().map(Genre::getName).collect(Collectors.joining(", ")),
+                    movie.getPoster(),
+                    movie.getRating(),
+                    movie.getDirector().getName(),
+                    movie.getActors().stream().map(Actor::getName).collect(Collectors.joining(", "))
+            ));
+        }
+        return movieDtos;
     }
 
     //************** GET MOVIE BY ID ****************
