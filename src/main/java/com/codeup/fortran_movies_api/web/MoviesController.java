@@ -18,12 +18,15 @@ public class MoviesController {
     private final MoviesRepository moviesRepository;
     private final DirectorsRepository directorsRepository;
     private final ActorsRepository actorsRepository;
+    private final GenresRepository genresRepository;
 
 
-    public MoviesController(MoviesRepository moviesRepository, DirectorsRepository directorsRepository, ActorsRepository actorsRepository) {
+    public MoviesController(MoviesRepository moviesRepository, DirectorsRepository directorsRepository,
+                            ActorsRepository actorsRepository, GenresRepository genresRepository) {
         this.directorsRepository = directorsRepository;
         this.moviesRepository = moviesRepository;
         this.actorsRepository = actorsRepository;
+        this.genresRepository = genresRepository;
     }
 
 //************** GET ALL MOVIES ****************
@@ -70,6 +73,13 @@ public class MoviesController {
     public List<Director> getByDirector(@RequestParam("name") String directorName){
         System.out.println(directorName);
         return directorsRepository.findByName(directorName);
+    }
+
+//    ************* GET MOVIES BY GENRE ***************
+    @GetMapping("search/genre")
+    public List<Genre> getByGenre(@RequestParam("name") String genreName){
+        System.out.println(genreName);
+        return genresRepository.findByName(genreName);
     }
 
     //************** CREATE A MOVIE ****************

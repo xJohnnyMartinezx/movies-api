@@ -79,7 +79,6 @@ public class Movie {
         this.year = year;
     }
 
-
     public Director getDirector() {
         return director;
 
@@ -113,7 +112,8 @@ public class Movie {
         this.rating = rating;
     }
 
-//*****NEED GETGENRES GETTER FOR JACKSON TO SERIALIZE LIST OF MOVIES*****
+//*****NEED LIST GENRE/ACTORS GETTER FOR JACKSON TO SERIALIZE LIST OF MOVIES*****
+//                ***********GENRES***********
     public List<Genre> getGenres() {
         return genres;
     }
@@ -122,6 +122,7 @@ public class Movie {
         this.genres = genres;
     }
 
+//                ************ACTORS************
     public List<Actor> getActors() {
         return actors;
     }
@@ -129,6 +130,7 @@ public class Movie {
     public void setActors(List<Actor> actors) {
         this.actors = actors;
     }
+
 
     //    ************TOSTRING OVERRIDE************
     @Override
