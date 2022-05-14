@@ -37,7 +37,6 @@ CREATE TABLE IF NOT EXISTS movies
     plot        TEXT,
     poster      TEXT,
     rating      CHAR(1),
-    director    VARCHAR(120),
     director_id INT UNSIGNED NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (director_id) REFERENCES directors (id)

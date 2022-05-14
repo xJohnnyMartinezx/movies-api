@@ -34,9 +34,14 @@ public class Genre {
         this.name = name;
     }
 
+
+
     //           ********EMPTY CONSTRUCTOR******
     public Genre() {
 
+    }
+    public Genre(String name){
+        this.name = name;
     }
 
     //    ****************GETTERS AND SETTERS*************

@@ -38,7 +38,7 @@ public class Movie {
 
 
 
-    //      ***********CONSTRUCTOR*************
+    //      *********** CONSTRUCTOR *************
     public Movie(int id, String title, String year, String plot, String poster, String rating) {
         this.id = id;
         this.title = title;
@@ -47,6 +47,16 @@ public class Movie {
         this.poster = poster;
         this.rating = rating;
     }
+
+//    *********** CONSTRUCTOR FOR POST/CREATE MOVIE **********
+    public Movie(String title, String year, String plot, String poster, String rating) {
+        this.title = title;
+        this.year = year;
+        this.plot = plot;
+        this.poster = poster;
+        this.rating = rating;
+    }
+
 
 
     //           ********EMPTY CONSTRUCTOR******

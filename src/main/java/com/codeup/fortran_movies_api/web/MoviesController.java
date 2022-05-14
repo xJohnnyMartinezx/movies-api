@@ -8,6 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListResourceBundle;
 import java.util.stream.Collectors;
 
 @CrossOrigin
@@ -37,7 +38,7 @@ public class MoviesController {
 //    }
 
     @GetMapping("all")
-    public List<MovieDto> getAll(){
+    public List<MovieDto> getAll() {
         List<Movie> movieEntities = moviesRepository.findAll();
         List<MovieDto> movieDtos = new ArrayList<>();
         for (Movie movie : movieEntities) {
@@ -64,7 +65,7 @@ public class MoviesController {
 
     //************** GET MOVIE BY TITLE ****************
     @GetMapping("search") // /api/movies/search?title=<movieTitle>&id=<movieId>
-    public List<Movie> getByTitle(@RequestParam("title") String title){
+    public List<Movie> getByTitle(@RequestParam("title") String title) {
 //            throws IOException{
 //        try{
 //            moviesRepository.findByTitle(title);
@@ -77,40 +78,77 @@ public class MoviesController {
 
     //************** GET MOVIES BY YEAR RANGE ****************
     @GetMapping("search/year") // api/movies/search/year
-    public List<Movie> getByYearRange(@RequestParam("startYear") int startYear, @RequestParam("endYear") int endYear){
+    public List<Movie> getByYearRange(@RequestParam("startYear") int startYear, @RequestParam("endYear") int endYear) {
         return moviesRepository.findByYearRange(startYear, endYear);
     }
 
-//    ********** GET MOVIES BY ACTORS *****************
+    //    ********** GET MOVIES BY ACTORS *****************
     @GetMapping("search/actor")
-    public List<Actor> getByActor(@RequestParam("name") String actorName){
+    public List<Actor> getByActor(@RequestParam("name") String actorName) {
         System.out.println(actorName);
         return actorsRepository.findByName(actorName);
     }
 
     //    ********** GET MOVIES BY DIRECTOR *****************
     @GetMapping("search/director")
-    public List<Director> getByDirector(@RequestParam("name") String directorName){
+    public List<Director> getByDirector(@RequestParam("name") String directorName) {
         System.out.println(directorName);
         return directorsRepository.findByName(directorName);
     }
 
-//    ************* GET MOVIES BY GENRE ***************
+    //    ************* GET MOVIES BY GENRE ***************
     @GetMapping("search/genre")
-    public List<Genre> getByGenre(@RequestParam("name") String genreName){
+    public Genre getByGenre(@RequestParam("name") String genreName) {
         System.out.println(genreName);
-        return genresRepository.findByName(genreName);
+        return genresRepository.findGenreByName(genreName);
     }
 
     //************** CREATE A MOVIE ****************
+//    @PostMapping
+//    public void create(@RequestBody Movie movie){
+//        moviesRepository.save(movie);
+//    }
+
     @PostMapping
-    public void create(@RequestBody Movie movie){
-        moviesRepository.save(movie);
+    public void create(@RequestBody MovieDto movieDto) {
+        Movie movieToAdd = new Movie(
+                movieDto.getTitle(),
+                movieDto.getYear(),
+                movieDto.getPlot(),
+                movieDto.getPoster(),
+                movieDto.getRating()
+        );
+
+
+        List<Director> directorsInDb = directorsRepository.findByName(movieDto.getDirector());
+        System.out.println(directorsInDb);
+        if (directorsInDb.isEmpty()) {
+            Director newDirector = new Director(movieDto.getDirector());
+            movieToAdd.setDirector(directorsRepository.save(newDirector));
+        } else {
+            movieToAdd.setDirector(directorsInDb.get(0));
+        }
+
+        String[] genres = movieDto.getGenre().split(", ");
+        List<Genre> movieGenres = new ArrayList<>();
+        for (String genre : genres) {
+            Genre genreInDb = genresRepository.findGenreByName(genre);
+            System.out.println(genreInDb);
+            if (genreInDb == null){
+                Genre newGenre = new Genre(genre);
+                movieGenres.add(genresRepository.save(newGenre));
+            }else {
+                movieGenres.add(genreInDb);
+            }
+        }
+        movieToAdd.setGenres(movieGenres);
+
+         moviesRepository.save(movieToAdd);
     }
 
     //************** CREATE MULTIPLE MOVIES ****************
     @PostMapping("all")
-    public void createAll(@RequestBody List<Movie> moviesToAdd){
+    public void createAll(@RequestBody List<Movie> moviesToAdd) {
         moviesRepository.saveAll(moviesToAdd);
         System.out.println(moviesToAdd);
     }
@@ -120,7 +158,7 @@ public class MoviesController {
     public void deleteById(@PathVariable int id) throws IOException {
         try {
             moviesRepository.deleteById(id);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No movie matching ID: " + id);
         }
 
@@ -134,7 +172,6 @@ public class MoviesController {
 //
 //        moviesRepository.save(movie);
 //    }
-
 
 
 }
