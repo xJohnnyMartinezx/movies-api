@@ -14,12 +14,20 @@ public class Genre {
     private int id;
     private String name;
 
+//    @ManyToMany
+//    @JoinTable(name="movie_genre",
+//            joinColumns =
+//            @JoinColumn(name = "genre_id", referencedColumnName = "id"),
+//            inverseJoinColumns =
+//            @JoinColumn(name = "movie_id", referencedColumnName = "id")
+//    )
+
     @ManyToMany
     @JoinTable(name="movie_genre",
             joinColumns =
-            @JoinColumn(name = "genre_id", referencedColumnName = "id"),
+            @JoinColumn(name = "genre_id"),
             inverseJoinColumns =
-            @JoinColumn(name = "movie_id", referencedColumnName = "id")
+            @JoinColumn(name = "movie_id")
     )
 
 
@@ -37,12 +45,15 @@ public class Genre {
 
 
     //           ********EMPTY CONSTRUCTOR******
-    public Genre() {
 
-    }
     public Genre(String name){
         this.name = name;
     }
+
+    public Genre() {
+
+    }
+
 
     //    ****************GETTERS AND SETTERS*************
 

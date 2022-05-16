@@ -26,8 +26,17 @@ public class Movie {
 
 //    ********BRINGS IN LIST OF GENRES (I THINK)**********
 //    NEED TO CREATE GETTERS AMD SETTERS FOR THIS.
-    @ManyToMany(mappedBy = "movies")
+//    @ManyToMany(mappedBy = "movies")
+//    @JsonIgnoreProperties("movies")
+//    private List<Genre> genres;
+
+
+    @ManyToMany(cascade = CascadeType.ALL)
     @JsonIgnoreProperties("movies")
+    @JoinTable(name = "movie_genre",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
     private List<Genre> genres;
 
 //    **********BRINGS IN LIST OF ACTORS (I THINK)********
